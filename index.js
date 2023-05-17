@@ -11,6 +11,10 @@ app.get('/', (req, res) =>{
     res.send('Car toy market server is Running');
 })
 
+app.get('/', (req, res) => {
+    res.send('')
+})
+
 app.listen(port, () => {
     console.log(`Car toy server is running on port ${port}`);
 })
