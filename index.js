@@ -15,7 +15,9 @@ app.get('/', (req, res) =>{
 
 
 // MongoDB
-console.log(process.env.USER_NAME);
+console.log(process.env.USER_NAME, process.env.USER_PASS);
+
+
 
 const uri = `mongodb+srv://${process.env.USER_NAME}:${process.env.USER_PASS}@cluster0.gkyk9vk.mongodb.net/?retryWrites=true&w=majority`;
 
@@ -30,6 +32,19 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
+
+    const serviceCollection = client.db('carToys').collection('toys');
+
+    app.get('/toys', async(req, res) => {
+      const cursor = serviceCollection.find();
+      const result = await cursor.toArray();
+      res.send(result)
+    })
+
+    
+
+
+
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
     // Send a ping to confirm a successful connection
@@ -37,7 +52,7 @@ async function run() {
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
     // Ensures that the client will close when you finish/error
-    await client.close();
+    // await client.close();
   }
 }
 run().catch(console.dir);
