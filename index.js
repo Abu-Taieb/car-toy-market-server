@@ -46,7 +46,7 @@ async function run() {
       const query = {_id: new ObjectId(id)};
 
       const options = {
-        projection: { title:1, price:1, picture_url:1, toy_name:1, seller_name:1, seller_email:1, rating:1, available_quantity:1, description:1 },
+        projection: { title:1, price:1, picture_url:1, toy_name:1, seller_name:1, seller_email:1, rating:1, available_quantity:1, description:1 , catagory: 1},
       }
 
       const result = await serviceCollection.findOne(query,options);
