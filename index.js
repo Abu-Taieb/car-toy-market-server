@@ -34,7 +34,7 @@ async function run() {
   try {
 
     const serviceCollection = client.db('carToys').collection('toys');
-    const addNewCollection = client.db('carToys').collection('toys');
+    const toyCollection = client.db('carToys').collection('toys');
 
     app.get('/toys', async(req, res) => {
       const cursor = serviceCollection.find();
