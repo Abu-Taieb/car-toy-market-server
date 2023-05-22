@@ -14,7 +14,6 @@ app.get("/", (req, res) => {
 });
 
 // MongoDB
-console.log(process.env.USER_NAME, process.env.USER_PASS);
 
 const uri = `mongodb+srv://${process.env.USER_NAME}:${process.env.USER_PASS}@cluster0.gkyk9vk.mongodb.net/?retryWrites=true&w=majority`;
 
@@ -79,7 +78,7 @@ async function run() {
     // Add New Toy
     app.post('/addNewToy', async(req, res) => {
       const addNewToy = req.body;
-      console.log(addNewToy);
+      // console.log(addNewToy);
       const result = await toyNewCollection.insertOne(addNewToy);
       res.send(result);
     });
@@ -87,9 +86,10 @@ async function run() {
 
     // Toy Delete 
     app.delete('/addNewToy/:id', async(req, res) => {
-      const id = req.params.id;
+      const id = req.params?.id;
       const query = { _id: new ObjectId(id)}
       const result = await toyNewCollection.deleteOne(query);
+      console.log(result);
       res.send(result);
     })
 
