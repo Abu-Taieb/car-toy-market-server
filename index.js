@@ -6,7 +6,14 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 // Middleware
-app.use(cors());
+const corsConfig = {
+  origin: "*",
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE"],
+};
+app.use(cors(corsConfig));
+app.options("", cors(corsConfig));
+
 app.use(express.json());
 
 app.get("/", (req, res) => {
@@ -29,8 +36,6 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
-
 
     const serviceCollection = client.db("carToys").collection("toys");
     const toyNewCollection = client.db("carToys").collection("addNewToy");
@@ -65,33 +70,32 @@ async function run() {
     });
 
     // Get new added toy data
-    app.get('/addNewToy', async(req, res) => {
+    app.get("/addNewToy", async (req, res) => {
       // console.log(req.query.email);
       let query = {};
-      if(req.query?.email){
-        query={email: req.query.email}
+      if (req.query?.email) {
+        query = { email: req.query.email };
       }
       const result = await toyNewCollection.find(query).toArray();
       res.send(result);
-    })
+    });
 
     // Add New Toy
-    app.post('/addNewToy', async(req, res) => {
+    app.post("/addNewToy", async (req, res) => {
       const addNewToy = req.body;
       // console.log(addNewToy);
       const result = await toyNewCollection.insertOne(addNewToy);
       res.send(result);
     });
 
-
-    // Toy Delete 
-    app.delete('/addNewToy/:id', async(req, res) => {
+    // Toy Delete
+    app.delete("/addNewToy/:id", async (req, res) => {
       const id = req.params?.id;
-      const query = { _id: new ObjectId(id)}
+      const query = { _id: new ObjectId(id) };
       const result = await toyNewCollection.deleteOne(query);
       console.log(result);
       res.send(result);
-    })
+    });
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
