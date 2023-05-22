@@ -67,12 +67,12 @@ async function run() {
 
     // Get new added toy data
     app.get('/addNewToy', async(req, res) => {
-      console.log(req.query.email);
+      // console.log(req.query.email);
       let query = {};
       if(req.query?.email){
         query={email: req.query.email}
       }
-      const result = await toyNewCollection.find().toArray();
+      const result = await toyNewCollection.find(query).toArray();
       res.send(result);
     })
 
@@ -85,6 +85,13 @@ async function run() {
     });
 
 
+    // Toy Delete 
+    app.delete('/addNewToy/:id', async(req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id)}
+      const result = await toyNewCollection.deleteOne(query);
+      res.send(result);
+    })
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
